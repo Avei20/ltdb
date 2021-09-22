@@ -8,6 +8,7 @@ import { muridInputValidation } from "../middleware/validator/muridValidator";
 import { alQuranInputValidation } from "../middleware/validator/quranValidator";
 import { getQuran, inputQuran } from "../controller/quran";
 import { loginValidator } from "../middleware/validator/loginValidator";
+import { getEvent } from "../controller/event";
 const router = Router()
 
 router
@@ -40,6 +41,9 @@ router
         .post([checkToken, checkRole(['ADMIN', 'TU'])], ...muridInputValidation, inputMurid)
         .patch([checkToken, checkRole(['ADMIN', 'TU'])], editMurid)
 
+router  
+    .route('/event')
+        .get([checkToken, checkRole(['ADMIN', 'TU'])], getEvent)
 
 
 export default router

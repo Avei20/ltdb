@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { User } from ".prisma/client";
-import { PrismaClient } from ".prisma/client";
-import { resolveTripleslashReference } from "typescript";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient()
 

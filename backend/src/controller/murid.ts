@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Prisma, PrismaClient } from "@prisma/client";
-import * as jwt from 'jsonwebtoken'
-import { decrypt } from "./user";
+import { decrypt, generateUsername } from "./user";
+import { getId } from "./auth";
 
 const prisma = new PrismaClient()
 
@@ -20,9 +20,6 @@ function generateNIS(tahunMasuk : number, tahunLulus: number) {
     return lulus + masuk + String(belakang)    
 }   
 
-function validasiInputMurid (data : Prisma.MuridCreateInput) {
-    
-}
 
 export const inputMurid = async (req: Request, res: Response) : Promise<void> => {
     //input data murid langsung generate history sama user 
@@ -30,7 +27,7 @@ export const inputMurid = async (req: Request, res: Response) : Promise<void> =>
     const tahunMasuk = req.body.tahunMasuk 
     const tahunLulus = req.body.tahunLulus
     let nis = generateNIS(tahunMasuk, tahunLulus)
-    const username = data.nama.split(' ')[0] + '.' + data.nama.split(' ')[data.nama.split(' ').length - 1 ]
+    const username = generateUsername(data.nama)
     const defaultPassword = await decrypt('L@n7413ur')
     
     prisma.murid.findUnique({
@@ -81,15 +78,14 @@ export const inputMurid = async (req: Request, res: Response) : Promise<void> =>
                 }
             }
         ).then(murid => {
-            const token = <string>req.headers['auth']
-            const decoded = jwt.decode(token, {complete: true})
-            const userid = decoded?.payload.id
+            const userid = getId(req.headers['auth'] as string)
             prisma.event.create({
                 data : {
                     type : 'CREATE', 
                     target : 'MURID',
                     targetId : murid.id,
-                    userId : userid, 
+                    userId : userid,
+                    time : new Date(), 
                 }   
             }).catch(err => {
                 console.log(err)
@@ -136,8 +132,7 @@ export const editMurid = async (req : Request, res: Response) : Promise<void> =>
             }
         }).then (murid => {
             const token = <string>req.headers['auth']
-            const decoded = jwt.decode(token, {complete: true})
-            const userid = decoded?.payload.id
+            const userid = getId(token)
             prisma.event.create({
                 data : {
                     type : 'UPDATE', 
@@ -162,3 +157,4 @@ export const editMurid = async (req : Request, res: Response) : Promise<void> =>
         })
     })
 }
+

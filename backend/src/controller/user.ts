@@ -10,6 +10,11 @@ export async function decrypt(passwordPlain : string) : Promise<string> {
     return hash(passwordPlain, salt)
 }
 
+export const generateUsername = (nama : string) => 
+{
+    return nama.split(' ')[0] + '.' + nama.split(' ')[nama.split(' ').length - 1 ]
+}
+
 export async function addUser(req: Request, res : Response) : Promise<void> {
     const userData = req.body as unknown as Prisma.UserCreateInput
     prisma.user.create(

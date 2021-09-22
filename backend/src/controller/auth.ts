@@ -6,6 +6,12 @@ import { JWT_KEY, WAKTU_VALID_TOKEN } from '../constant'
 import { User } from '@prisma/client'
 
 const prisma = new PrismaClient()
+
+export const getId = (token : string) => 
+{
+    const decoded = jwt.decode(token, {complete : true})
+    return decoded?.payload.id
+}
       
 export const login = (req: Request, res: Response): void =>
 {

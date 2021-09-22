@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Prisma, PrismaClient } from '@prisma/client'
 import { decode } from "jsonwebtoken";
+import { TIMEZONE } from "../constant";
 
 const prisma = new PrismaClient()
 
@@ -20,12 +21,15 @@ export const inputQuran = async (req : Request, res : Response): Promise<void> =
         const token = req.headers['auth'] as string
         const decoded = decode(token, {complete :true})
         const userId = decoded?.payload.id
+        const time = new Date().toLocaleString("en-US",{timeZone : TIMEZONE})
+        console.log(time)
         prisma.event.create({
             data : {
                 type : 'CREATE',
                 target : 'ALQURAN',
                 targetId : input.id, 
-                userId : userId
+                userId : userId,
+                time : new Date(time)
             }
         }).then(quran=>{
             res.send({

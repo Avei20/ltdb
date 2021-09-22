@@ -43,7 +43,8 @@ enum EventModelType {
   MURID
   PARENT 
   SESSION 
-  ALQURAN 
+  ALQURAN
+  JAM_TAHFIDZ 
 }
 
 enum GolonganDarah {
