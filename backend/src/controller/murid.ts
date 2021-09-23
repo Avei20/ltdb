@@ -104,57 +104,52 @@ export const inputMurid = async (req: Request, res: Response) : Promise<void> =>
 
 export const editMurid = async (req : Request, res: Response) : Promise<void> => 
 {
-    const data = req.body as unknown as Prisma.MuridCreateInput
+    const data = req.body as unknown as Prisma.MuridUpdateInput
+    // const nis = req.body.nis as unknown as Prisma.MuridWhereUniqueInput
 
-    prisma.murid.findUnique({
+    prisma.murid.update({
         where : {
-            nis : data?.nis, 
+            nis : data.nis as Prisma.MuridWhereUniqueInput as string
+        }, 
+        data : {
+            nis : data.nis, 
+            nism : data.nism, 
+            nisn : data?.nisn,
+            nama : data?.nama?.toString().toUpperCase(),
+            jenisKelamin : data?.jenisKelamin, 
+            tempatLahir : data?.tempatLahir, 
+            tanggalLahir : data?.tanggalLahir as Date,
+            anakKe : Number(data?.anakKe),
+            jumlahSaudaraKandung : Number(data?.jumlahSaudaraKandung), 
+            jumlahSaudaraTiri : Number(data?.jumlahSaudaraTiri), 
+            jumlahSaudaraAngkat : Number(data?.jumlahSaudaraAngkat),
+            golonganDarah : data?.golonganDarah,
+            profileUrl : data?.profileUrl,
         }
-    }).then(murid => {
-        prisma.murid.update({
-            where : {
-                id : murid?.id
-            }, 
+    }).then (murid => {
+        const token = <string>req.headers['auth']
+        const userid = getId(token)
+        prisma.event.create({
             data : {
-                nis : data.nis, 
-                nism : data.nism, 
-                nisn : data?.nisn,
-                nama : data.nama.toUpperCase(),
-                jenisKelamin : data.jenisKelamin, 
-                tempatLahir : data.tempatLahir, 
-                tanggalLahir : new Date(data.tanggalLahir), 
-                anakKe : Number(data.anakKe),
-                jumlahSaudaraKandung : Number(data.jumlahSaudaraKandung), 
-                jumlahSaudaraTiri : Number(data.jumlahSaudaraTiri), 
-                jumlahSaudaraAngkat : Number(data.jumlahSaudaraAngkat),
-                golonganDarah : data?.golonganDarah,
-                profileUrl : data?.profileUrl,
-            }
-        }).then (murid => {
-            const token = <string>req.headers['auth']
-            const userid = getId(token)
-            prisma.event.create({
-                data : {
-                    type : 'UPDATE', 
-                    target : 'MURID',
-                    targetId : murid.id,
-                    userId : userid, 
-                }  
-            }).then (event => {
-                res.send({
-                    message : `${murid.nama} sudah diperbaharui`,
-                    data : murid
-                })
-            }).catch (err => {
-                res.send ({
-                    error : err
-                })
+                type : 'UPDATE', 
+                target : 'MURID',
+                targetId : murid.id,
+                userId : userid, 
+            }  
+        }).then (event => {
+            res.send({
+                message : `${murid.nama} sudah diperbaharui`,
+                data : murid
             })
         }).catch (err => {
-            console.log(err)
-            res.status(401)
-            res.send({ error : err})
+            res.send ({
+                error : err
+            })
         })
+    }).catch (err => {
+        console.log(err)
+        res.status(401)
+        res.send({ error : err})
     })
 }
 
