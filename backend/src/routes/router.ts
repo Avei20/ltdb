@@ -9,6 +9,10 @@ import { alQuranInputValidation } from "../middleware/validator/quranValidator";
 import { getQuran, inputQuran } from "../controller/quran";
 import { loginValidator } from "../middleware/validator/loginValidator";
 import { getEvent } from "../controller/event";
+import { inputGuru } from "../controller/guru";
+import { guruInputValidation } from "../middleware/validator/guruValidator";
+import { parentInputValidation } from "../middleware/validator/parentValidator";
+import { inputParent } from "../controller/parent";
 const router = Router()
 
 router
@@ -44,6 +48,19 @@ router
 router  
     .route('/event')
         .get([checkToken, checkRole(['ADMIN', 'TU'])], getEvent)
+
+router 
+    .route('/guru')
+        .post([checkToken, checkRole(['ADMIN', 'TU'])], ...guruInputValidation, inputGuru)
+
+router
+    .route('/parent')
+        .post([checkToken, checkRole(['ADMIN', 'TU'])], ...parentInputValidation, inputParent)
+        .patch()
+        .delete()
+
+router
+    .route('/sesi')
 
 
 export default router

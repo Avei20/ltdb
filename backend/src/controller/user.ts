@@ -38,8 +38,14 @@ export async function addUser(req: Request, res : Response) : Promise<void> {
     }).catch (reason => {
         console.dir(reason)
         res.status(500)
-        res.send({
+        res.json({
             error : reason
         })
     })
+}
+
+
+export const getRole = async (req : Request, res: Response) => 
+{
+    
 }

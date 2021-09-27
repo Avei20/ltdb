@@ -41,3 +41,17 @@ export const inputJamTahfidz = async (req: Request, res: Response) =>
             res.status(500).send({ error : err})
         })
 }
+
+// export const inputKelompokTahfidz = async (req : Request, res : Response)=>
+// {
+//     const data = req.body as unknown as Prisma.KelompokTahfidzCreateInput
+
+//     prisma.kelompokTahfidz.create(
+//         {
+//             data : 
+//             {
+                
+//             }
+//         }
+//     )
+// }

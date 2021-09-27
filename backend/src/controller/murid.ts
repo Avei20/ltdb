@@ -85,7 +85,6 @@ export const inputMurid = async (req: Request, res: Response) : Promise<void> =>
                     target : 'MURID',
                     targetId : murid.id,
                     userId : userid,
-                    time : new Date(), 
                 }   
             }).catch(err => {
                 console.log(err)

@@ -1,0 +1,22 @@
+.login-banner 
+{
+    height: 50px;
+    width: auto;
+} 
+
+body
+{
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.container-login
+{
+    background-color: #D7F88B;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -28,7 +28,7 @@ export const inputGuru = async (req: Request, res: Response) => {
             email : `${username}@lantabur.sch.id`,
             jenisKelamin : data.jenisKelamin,
             tempatLahir : data.tempatLahir,
-            tanggalLahir : data.tanggalLahir,
+            tanggalLahir : new Date(data.tanggalLahir),
             profileUrl : data?.profileUrl,
             guruDetails : 
             {
@@ -67,6 +67,7 @@ export const inputGuru = async (req: Request, res: Response) => {
         })
         
     }).catch(err => {
+        console.log(err)
         res.status(500).send({ error : err})
     })
 }

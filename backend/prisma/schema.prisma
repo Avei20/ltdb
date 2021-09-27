@@ -166,6 +166,7 @@ model Parent {
   nama                  String    
   tempatLahir           String
   tanggalLahir          DateTime
+  jenisKelamin          JenisKelamin
   agama                 Agama
   pendidikanTerakhir    Pendidikan
   penghasilanPerBulan   Int
