@@ -6,22 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./assets/favicon.ico" >
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="./style/index.css">
     <title>Lan Tabur</title>
 </head>
 <body>
-    <!-- <img src="./assets/logo.png" alt="" style="padding-top: 20px; display: block; margin-left: auto; margin-right: auto; width: 25%; height: 10%;">
-    <h1 style="text-align: center; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 100;"> Lan Tabur Website</h1>
-    <h2 style="text-align: center; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 100;">Website is under development by <a href="https://github.com/Avei20 ">Avei</a></h2> -->
-    <div class="container-login">
-        <img src="./assets/logo.png" class="col img-fluid">
-        <div class="g-5 container login-info col-7 justify-content-center align-self-center " >
-            <input type="text" name="User Name" id="" class="row">
-            <input type="password" name="Password " id="" class="row">
+
+    
+
+    <div class="rounded-3 container row container-login mx-auto mt-4 mb-4">
+        <img src="./assets/logo.png" class="col-5 d-block mt-4 mb-4 mx-auto" >
+        <div class="bg-lt-hijautua text-white col-5 mx-auto rounded-3 justify-content-center align-self-center">
+            <div class="text-center pt-4">
+                <h3>Selamat Datang di Lan Tabur Management System</h3>
+                <h3>Silahkan Login.</h3>
+            </div>
+            <form>
+                <div class="login-info col justify-content-center align-self-center m-5" >
+                    <div class="text-dark form-floating mb-3">
+                        <input type="text" name="User Name" id="username" class="form-control" placeholder="Username">
+                        <label for="username">Username</label>
+                    </div>
+                    <div class="form-floating text-dark mb-3">
+                        <input type="password" name="Password " id="password" class="row mx-auto form-control" placeholder="Password">
+                        <label for="password" class="form-label">Password</label>
+                    </div>
+                    <div class="row text-center px-3 mb-3">
+                        <button class="btn btn-outline-light px-5 mb-3 ">MASUK</button>
+                        <a href="#" class="text-decoration-none text-white">Lupa password ?</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <!-- Bootstrap + Popper  -->
-    <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

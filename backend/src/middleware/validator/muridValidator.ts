@@ -55,3 +55,40 @@ export const muridInputValidation = [
     ],
     validator
 ]
+
+export const muridUpdateValidation = [
+    [
+        check('nis')
+            .notEmpty()
+            .withMessage('Nama tidak boleh kosong'),
+        check('jenisKelamin')
+            .optional()
+            .isIn(Object.values(JenisKelamin))
+            .withMessage('Jenis Kelamin tidak terdaftar mohon input ulang'),
+        check('tanggalLahir')
+            .optional()   
+            .isDate()
+            .withMessage('Format tanggal lahir tidak valid mohon input ulang'),
+        check('anakKe')
+            .optional()
+            .isInt()
+            .withMessage('Format input harus berupa angka!'),
+        check('jumlahSaudaraKandung')
+            .optional()
+            .isInt()
+            .withMessage('Format input harus berupa angka'),
+        check('jumlahSaudaraTiri')
+            .optional()
+            .isInt()
+            .withMessage('Format input harus berupa angka!'),
+        check('jumlahSaudaraAngkat')
+            .optional()
+            .isInt()
+            .withMessage('Format input harus berupa angka!'),
+        check('golonganDarah')
+            .optional()
+            .isIn(Object.values(GolonganDarah))
+            .withMessage('Golongan Darah tidak valid mohon input ulang'),
+    ],
+    validator
+]

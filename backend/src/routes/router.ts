@@ -3,8 +3,8 @@ import { login } from "../controller/auth";
 import { addUser } from "../controller/user";
 import { checkRole } from "../middleware/security/checkRole";
 import { checkToken } from "../middleware/security/checkToken"
-import { inputMurid, editMurid } from '../controller/murid'
-import { muridInputValidation } from "../middleware/validator/muridValidator";
+import { inputMurid, editMurid, getMuridByNis } from '../controller/murid'
+import { muridInputValidation, muridUpdateValidation } from "../middleware/validator/muridValidator";
 import { alQuranInputValidation } from "../middleware/validator/quranValidator";
 import { getQuran, inputQuran } from "../controller/quran";
 import { loginValidator } from "../middleware/validator/loginValidator";
@@ -43,8 +43,11 @@ router
 router
     .route('/murid')
         .post([checkToken, checkRole(['ADMIN', 'TU'])], ...muridInputValidation, inputMurid)
-        .patch([checkToken, checkRole(['ADMIN', 'TU'])], editMurid)
-
+        
+router
+    .route('/murid/:nis')
+        .patch([checkToken, checkRole(['ADMIN', 'TU'])],...muridUpdateValidation, editMurid)
+        .get([checkToken, checkRole(['ADMIN', 'TU',])], getMuridByNis)
 router  
     .route('/event')
         .get([checkToken, checkRole(['ADMIN', 'TU'])], getEvent)

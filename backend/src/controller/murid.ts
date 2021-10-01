@@ -104,24 +104,23 @@ export const inputMurid = async (req: Request, res: Response) : Promise<void> =>
 export const editMurid = async (req : Request, res: Response) : Promise<void> => 
 {
     const data = req.body as unknown as Prisma.MuridUpdateInput
-    // const nis = req.body.nis as unknown as Prisma.MuridWhereUniqueInput
+    const { nis }= req.params 
 
     prisma.murid.update({
         where : {
-            nis : data.nis as Prisma.MuridWhereUniqueInput as string
+            nis : nis
         }, 
-        data : {
-            nis : data.nis, 
-            nism : data.nism, 
-            nisn : data?.nisn,
+        data : { 
+            nism : data?.nism, 
+            nisn : data?.nisn ,
             nama : data?.nama?.toString().toUpperCase(),
             jenisKelamin : data?.jenisKelamin, 
             tempatLahir : data?.tempatLahir, 
             tanggalLahir : data?.tanggalLahir as Date,
-            anakKe : Number(data?.anakKe),
-            jumlahSaudaraKandung : Number(data?.jumlahSaudaraKandung), 
-            jumlahSaudaraTiri : Number(data?.jumlahSaudaraTiri), 
-            jumlahSaudaraAngkat : Number(data?.jumlahSaudaraAngkat),
+            anakKe : data?.anakKe as number ,
+            jumlahSaudaraKandung : data?.jumlahSaudaraKandung as number, 
+            jumlahSaudaraTiri : data?.jumlahSaudaraTiri as number, 
+            jumlahSaudaraAngkat : data?.jumlahSaudaraAngkat as number,
             golonganDarah : data?.golonganDarah,
             profileUrl : data?.profileUrl,
         }
@@ -152,3 +151,39 @@ export const editMurid = async (req : Request, res: Response) : Promise<void> =>
     })
 }
 
+export const getMuridByNis = async (req : Request , res: Response) => 
+{
+    const { nis } = req.params
+    prisma.murid.findUnique({
+        where : {
+            nis : nis, 
+        },
+        select :
+        {
+            nis : true, 
+            nism :true, 
+            nisn : true, 
+            nama : true, 
+            tempatLahir : true, 
+            tanggalLahir : true, 
+            anakKe : true,
+            jumlahSaudaraAngkat : true, 
+            jumlahSaudaraKandung : true, 
+            jumlahSaudaraTiri : true, 
+            golonganDarah : true,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+        }
+    })
+    .then(murid => 
+        {
+            res.send(
+                {
+                    murid
+                }
+            )
+        })
+        .catch(err => 
+            {
+                console.log(err)
+                res.send({error : err})
+            })
+}

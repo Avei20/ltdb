@@ -42,3 +42,24 @@ export const parentInputValidation = [
     ],
     validator
 ]
+
+export const parentUpdateValidation = [
+    [
+        check('tanggalLahir')
+            .isDate()
+            .withMessage('Format tanggal lahir tidak valid mohon input ulang'),
+        check('jenisKelamin')
+            .isIn(Object.values(JenisKelamin))
+            .withMessage('Jenis Kelamin tidak terdaftar mohon input ulang'),
+        check('agama')
+            .isIn(Object.values(Agama))
+            .withMessage('Agama tidak dikenali mohon input ulang'),
+        check('pendidikanTerakhir')
+            .isIn(Object.values(Pendidikan))
+            .withMessage('Jenis Pendidikan tidak terdaftar mohon input ulang'),
+        check('statusHidup')
+            .isIn(Object.values(Hidup))
+            .withMessage('Status Hidup tidak dikenali mohon input ulang'),
+    ],
+    validator
+]
