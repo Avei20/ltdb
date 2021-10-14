@@ -1,6 +1,8 @@
 FROM nginx:mainline-alpine
 
-COPY default.conf /etc/nginx/conf.d/default.conf
+RUN mkdir /app
+
+COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY /src /usr/share/nginx/html
 

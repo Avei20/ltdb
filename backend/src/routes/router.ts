@@ -82,4 +82,11 @@ router
             })
             // const file = req.file?.path;
         })
+
+router
+    .route ('/testing')
+        .post((req: Request, res: Response) => {
+            res.send({message : "ya bisa", body : req.body})
+        })
+    
 export default router
