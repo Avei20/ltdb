@@ -4,25 +4,28 @@ var btnMasuk = document.getElementById('btnMasuk')
 
 var pathLogin = "https://lantabur.sch.id/ltms/login"
 
-function login(username, pass) 
+function login() 
 {
-    fetch('localhost:2008/login', 
+    var username = document.getElementById('username')
+    var pass = document.getElementById('password')
+    
+    fetch(pathLogin, 
         {
             method : 'post',
             body : 
             {
-                username :username,
-                password : pass
+                username : username.value,
+                password : pass.value
             }
         }    
     ).then ((res) => 
     {
-        console.log(res)
+        alert(res)
     })
     .catch (err => console.log(err))
 }
 
-// btnMasuk.addEventListener('click', console.log(username.values))
+
 
 function print () 
 {

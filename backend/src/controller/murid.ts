@@ -5,7 +5,7 @@ import { getId } from "./auth";
 
 const prisma = new PrismaClient()
 
-function random (min:number, max : number) {
+export function random (min:number, max : number) {
     min = Math.ceil(min)
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min + 1)) + min
@@ -105,6 +105,7 @@ export const editMurid = async (req : Request, res: Response) : Promise<void> =>
 {
     const data = req.body as unknown as Prisma.MuridUpdateInput
     const { nis }= req.params 
+    
 
     prisma.murid.update({
         where : {

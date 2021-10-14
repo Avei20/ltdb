@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { request, Request, Response, Router } from "express";
 import { login } from "../controller/auth";
 import { addUser } from "../controller/user";
 import { checkRole } from "../middleware/security/checkRole";
@@ -13,6 +13,11 @@ import { inputGuru } from "../controller/guru";
 import { guruInputValidation } from "../middleware/validator/guruValidator";
 import { parentInputValidation } from "../middleware/validator/parentValidator";
 import { inputParent } from "../controller/parent";
+import multer from "multer";
+import { muridProfileStorage } from "../middleware/multer/muridMulter";
+import * as fs from 'fs'
+import * as path from 'path'
+
 const router = Router()
 
 router
@@ -42,7 +47,7 @@ router
         .patch()
 router
     .route('/murid')
-        .post([checkToken, checkRole(['ADMIN', 'TU'])], ...muridInputValidation, inputMurid)
+        .post([checkToken, checkRole(['ADMIN', 'TU'])], inputMurid)
         
 router
     .route('/murid/:nis')
@@ -65,5 +70,16 @@ router
 router
     .route('/sesi')
 
-
+router
+    .route('/upload')
+        .post((req : Request , res: Response) => {
+            const upload = multer({ storage : muridProfileStorage}).single('profilePhoto')
+            upload ( req , res , function (err) 
+            {
+                fs.renameSync(req.file?.path as string, req.file?.path.replace(req.file.fieldname, req.body.nis + path.extname(req.file.originalname)) as string)
+                console.log(`Path ${req.file?.path} name ${req.file?.fieldname}`)
+                console.log(req.body.nis)
+            })
+            // const file = req.file?.path;
+        })
 export default router

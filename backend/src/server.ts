@@ -9,6 +9,7 @@ server.disable('x-powered-by')
 server.use(allowCrossDomain)
 
 server.use (express.urlencoded({extended: true}))
+server.use (express.json())
 server.use ('/', Router)
 
 server.listen(SERVER_PORT, ()=> {
