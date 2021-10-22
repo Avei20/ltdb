@@ -12,6 +12,7 @@ generator client {
 
 enum Role {
   ADMIN 
+  GURU_TAHFIDZ
   GURU
   MURID
   KEPALA_TAHFIDZ
@@ -45,6 +46,7 @@ enum EventModelType {
   SESSION 
   ALQURAN
   JAM_TAHFIDZ 
+  ROLES
 }
 
 enum GolonganDarah {
@@ -83,21 +85,33 @@ model User {
   id            Int     @id @default(autoincrement())
   username      String  @unique
   password      String  
-  role          Role
   isGuru        GuruDetails?
   isMurid       MuridDetails? 
   isParent      ParentDetails?
+  deleted       Boolean @default(false)
+  roles         Roles[]
   auditLogs     Event[]
+}
+
+model Roles {
+  id          Int   @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  role        Role
+  
 }
 
 model Guru {
   id            Int     @id @default(autoincrement())
   nig           String  @unique
+  nigs          String  @unique
+  kodeGuru      String  @unique
   nama          String 
   email         String
   jenisKelamin  JenisKelamin
   tempatLahir   String
   tanggalLahir  DateTime
+  tanggalMasuk  DateTime
   profileUrl    String?
   deleted       Boolean     @default(false)
 
@@ -120,6 +134,7 @@ model GuruTahfidzDetails {
   kelompokTahfidz     KelompokTahfidz[]
   @@id([guruId])
 }
+
 
 model Murid {
   id                    Int       @id @default(autoincrement())

@@ -6,26 +6,35 @@ export const guruInputValidation = [
     [
         check('nig')
             .notEmpty()
-            .withMessage('NIG tidak boleh kosong')
-            .not()
-            .custom((val) => /[^0-9]/g.test(val))
-            .withMessage('NIG harus berupa angka'),
+            .withMessage('NIG tidak boleh kosong'),
         check('nama')
             .notEmpty()
-            .withMessage('Nama Guru tidak boleh kosong'),
-            check('jenisKelamin')
+            .withMessage('Nama tidak boleh kosong'),
+        check('email')
+            .notEmpty()
+            .withMessage('Email tidak boleh kosong')
+            .isEmail()
+            .withMessage('Harap masukkan format email yang valid'),
+        check('jenisKelamin')
             .notEmpty()
             .withMessage('Jenis Kelamin tidak boleh kosong')
             .isIn(Object.values(JenisKelamin))
-            .withMessage('Jenis Kelamin tidak terdaftar mohon input ulang'),
+            .withMessage('Jenis Kelamin tidak valid mohon input ulang'),
         check('tempatLahir')
             .notEmpty()
-            .withMessage('Tempat Lahir tidak boleh kosong'),
+            .withMessage('Tempat lahir tidak boleh kosong')
+            .isString()
+            .withMessage('Tempat lahir harus berupa kalimat'),
         check('tanggalLahir')
             .notEmpty()
-            .withMessage('Tanggal Lahir tidak boleh kosong')
+            .withMessage('Tanggal lahir tidak boleh kosong')
             .isDate()
-            .withMessage('Format tanggal lahir tidak valid mohon input ulang'),
+            .withMessage('Format tanggal lahir tidak valid'),
+        check('tanggalMasuk')
+            .notEmpty()
+            .withMessage('Tanggal lahir tidak boleh kosong')
+            .isDate()
+            .withMessage('Format tanggal lahir tidak valid'),
     ],
     validator
 ]

@@ -1,13 +1,8 @@
-import { request, Request, Response, Router } from "express";
-import { login } from "../controller/auth";
-import { addUser } from "../controller/user";
+import { Request, Response, Router } from "express";
 import { checkRole } from "../middleware/security/checkRole";
 import { checkToken } from "../middleware/security/checkToken"
-import { inputMurid, editMurid, getMuridByNis } from '../controller/murid'
-import { muridInputValidation, muridUpdateValidation } from "../middleware/validator/muridValidator";
 import { alQuranInputValidation } from "../middleware/validator/quranValidator";
 import { getQuran, inputQuran } from "../controller/quran";
-import { loginValidator } from "../middleware/validator/loginValidator";
 import { getEvent } from "../controller/event";
 import { inputGuru } from "../controller/guru";
 import { guruInputValidation } from "../middleware/validator/guruValidator";
@@ -17,6 +12,11 @@ import multer from "multer";
 import { muridProfileStorage } from "../middleware/multer/muridMulter";
 import * as fs from 'fs'
 import * as path from 'path'
+import loginRoute from "./login";
+import userRoute from "./user";
+import muridRoute from "./murid";
+import testingRoute from "./testing";
+import guruRoute from "./guru";
 
 const router = Router()
 
@@ -29,14 +29,20 @@ router
         )
     })
 
-router.post('/login',...loginValidator ,login)
+router.use('/login', loginRoute)
+router.use('/murid', muridRoute)
+router.use('/user', userRoute)
+router.use('/testing', testingRoute)
+router.use('/guru', guruRoute)
+
+
 router.post ('/test-post', async (req: Request, res: Response) => {
     console.log(req.body)
 })
 
 router
     .route('/user')
-        .post([checkToken, checkRole(['ADMIN'])], addUser)
+        // .post([checkToken, checkRole(['ADMIN'])], addUser)
         .get()
         .patch()
 
@@ -45,21 +51,12 @@ router
         .get([checkToken, checkRole(['INPUT_QURAN', 'ADMIN', 'TU', 'KEPALA_TAHFIDZ'])], getQuran)
         .post([checkToken, checkRole(['INPUT_QURAN', 'ADMIN', 'TU'])], ...alQuranInputValidation, inputQuran)
         .patch()
-router
-    .route('/murid')
-        .post([checkToken, checkRole(['ADMIN', 'TU'])], inputMurid)
-        
-router
-    .route('/murid/:nis')
-        .patch([checkToken, checkRole(['ADMIN', 'TU'])],...muridUpdateValidation, editMurid)
-        .get([checkToken, checkRole(['ADMIN', 'TU',])], getMuridByNis)
+
+
 router  
     .route('/event')
-        .get([checkToken, checkRole(['ADMIN', 'TU'])], getEvent)
+        .get([checkToken, checkRole(['ADMIN'])], getEvent)
 
-router 
-    .route('/guru')
-        .post([checkToken, checkRole(['ADMIN', 'TU'])], ...guruInputValidation, inputGuru)
 
 router
     .route('/parent')
@@ -83,10 +80,9 @@ router
             // const file = req.file?.path;
         })
 
-router
-    .route ('/testing')
-        .post((req: Request, res: Response) => {
-            res.send({message : "ya bisa", body : req.body})
-        })
+// router  
+    // .route ('/user')
+        // .post([checkToken, checkRole(['ADMIN'])], addUser)
+
     
 export default router

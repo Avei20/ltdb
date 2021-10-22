@@ -1,4 +1,4 @@
-import { check } from "express-validator";
+import { body, check, param } from "express-validator";
 import { validator } from "./baseValidator";
 import { GolonganDarah, JenisKelamin } from ".prisma/client";
 
@@ -56,11 +56,16 @@ export const muridInputValidation = [
     validator
 ]
 
+
 export const muridUpdateValidation = [
     [
-        check('nis')
-            .notEmpty()
-            .withMessage('Nama tidak boleh kosong'),
+        param('nis')
+            .isInt()
+            .withMessage('NIS tidak Valid'),
+        check('nama')
+            .optional()
+            .isString()
+            .withMessage('Nama tidak boleh berupa angka'),
         check('jenisKelamin')
             .optional()
             .isIn(Object.values(JenisKelamin))
@@ -91,4 +96,13 @@ export const muridUpdateValidation = [
             .withMessage('Golongan Darah tidak valid mohon input ulang'),
     ],
     validator
+]
+
+export const muridByNisValidation = [
+    [
+        param('nis')
+            .isInt()
+            .withMessage("NIS tidak valid mohon input ulang")
+    ]
+    , validator
 ]

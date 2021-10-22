@@ -10,7 +10,12 @@ async function main() {
         create : {
             username : 'lt-administrator',
             password :hashSync('LtMs_20082021', genSaltSync(10)),
-            role : 'ADMIN'
+            roles : 
+            {
+                create : [
+                    {role : 'ADMIN'},
+                ]
+            }
         },
     })
     console.log ('Admin user created with username and password like server')

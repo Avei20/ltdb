@@ -5,6 +5,7 @@ export const validator = ( req : Request, res: Response, next: NextFunction): vo
     const error = validationResult(req)
     if(!error.isEmpty())
     {
+        console.log(error.isEmpty())
         console.log(req.body)
         res.json(
             {
@@ -12,6 +13,15 @@ export const validator = ( req : Request, res: Response, next: NextFunction): vo
             }
         )
         return
+    }
+    else next()
+}
+
+export const checkEmptyBody = (req : Request, res: Response, next : NextFunction) : void => {
+    if (Object.keys(req.body).length == 0) 
+    {
+        res.send({message : 'Data tidak boleh kosong mohon input ulang'})
+        return 
     }
     else next()
 }

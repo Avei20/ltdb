@@ -12,10 +12,5 @@ function convertTZ(date: Date, tzString : string)
 export const getEvent = async (req : Request, res : Response) => 
 {
     const event = await prisma.event.findMany()
-    
-    const testing = event[9]
-    let newTime = convertTZ(testing.time, TIMEZONE)
-    testing.time = newTime
-    console.log(newTime)
-    console.log(testing)
+    res.send({event})
 }

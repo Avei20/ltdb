@@ -32,7 +32,7 @@ export const inputParent = async (req : Request, res : Response) => {
                 data : 
                 {
                     nip : nip,
-                    nama : data.nama.toUpperCase(),
+                    nama : data.nama,
                     tempatLahir : data.tempatLahir,
                     tanggalLahir : new Date(data.tanggalLahir),
                     jenisKelamin : data.jenisKelamin,
