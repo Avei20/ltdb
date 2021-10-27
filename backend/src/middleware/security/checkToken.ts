@@ -10,7 +10,7 @@ export const checkToken = (req: Request, res: Response, next : NextFunction) =>
     {
         res.status(400)
         res.send({
-            error: 'User Not Found '
+            error: 'Akses Di Tolak'
         })
         return 
     }

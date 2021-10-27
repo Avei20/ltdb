@@ -64,7 +64,7 @@ export const muridUpdateValidation = [
             .withMessage('NIS tidak Valid'),
         check('nama')
             .optional()
-            .isString()
+            .isString() // ganti ke re A-Za-z 
             .withMessage('Nama tidak boleh berupa angka'),
         check('jenisKelamin')
             .optional()

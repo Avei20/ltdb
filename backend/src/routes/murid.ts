@@ -3,7 +3,7 @@ import { deleteMuridByNis, editMurid, getMurid, getMuridByNis, inputMurid, recov
 import { checkRole } from "../middleware/security/checkRole";
 import { checkToken } from "../middleware/security/checkToken";
 import { checkEmptyBody } from "../middleware/validator/baseValidator";
-import { muridByNisValidation, muridInputValidation, muridUpdateValidation, muridUpdateValidationBodyValidation } from "../middleware/validator/muridValidator";
+import { muridByNisValidation, muridInputValidation, muridUpdateValidation } from "../middleware/validator/muridValidator";
 
 const muridRoute = Router()
 

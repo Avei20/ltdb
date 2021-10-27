@@ -35,12 +35,13 @@ enum TipeEvent {
   CREATE
   UPDATE
   DELETE
+  RECOVERY
 }
 
 enum EventModelType {
   USER 
   GURU 
-  KELOMPOK_TAHFIDZ
+  HALAQOH
   MURID
   PARENT 
   SESSION 
@@ -119,10 +120,10 @@ model Guru {
 }
 
 model GuruDetails {
-  guruId              Int
   guru                Guru                @relation(fields: [guruId], references:[id])
-  userId              Int
+  guruId              Int
   user                User                @relation(fields: [userId], references:[id])
+  userId              Int
   guruTahfidzDetail   GuruTahfidzDetails?
   @@id([guruId])
 }
@@ -131,7 +132,7 @@ model GuruTahfidzDetails {
   guruId              Int 
   guruDetails         GuruDetails         @relation(fields: [guruId], references: [guruId])
   deleted             Boolean     @default(false)
-  kelompokTahfidz     KelompokTahfidz[]
+  kelompokTahfidz     Halaqoh[]
   @@id([guruId])
 }
 
@@ -171,7 +172,7 @@ model MuridTahfidzDetails {
   muridId                 Int 
   muridDetails            MuridDetails @relation(fields: [muridId], references: [muridId])
   kelompokTahfidzId       Int
-  kelompokTahfidz         KelompokTahfidz   @relation(fields: [kelompokTahfidzId], references: [id])
+  kelompokTahfidz         Halaqoh   @relation(fields: [kelompokTahfidzId], references: [id])
   sesi                    Session[]
   @@id([muridId])
 }
@@ -217,8 +218,9 @@ model Event {
   time          DateTime        @default(now())
 }
 
-model KelompokTahfidz {
-  id                  Int             @id @default(autoincrement())
+model Halaqoh {
+  id                  Int                     @id @default(autoincrement())
+  kode                String                  @unique 
   guruId              Int 
   guruTahfidzDetail   GuruTahfidzDetails     @relation(fields: [guruId], references: [guruId])
   muridTahfidzDetail  MuridTahfidzDetails[]

@@ -119,6 +119,51 @@ export const addRole = (req : Request, res : Response) =>
         })
 }
 
+export const addGuruTahfidzRole = (req : Request, res : Response) => 
+{
+    const data = req.body as unknown as Prisma.RolesCreateInput
+    const {username} = req.params
+    prisma.user.findUnique({
+        where : {username : username}
+    })
+    .then(user => 
+        {
+            if(user === null) 
+            {
+                res.status(404).send({message : 'User tidak ditemukan'})
+            }
+            else
+            {
+                prisma.roles.create({
+                    data : 
+                    {
+                        userId: user?.id as number,
+                        role : 'GURU_TAHFIDZ'
+                    }
+                })
+                .then(role => 
+                    {
+                        const userId = getId(req.headers['auth'] as string)
+                        prisma.event.create({
+                            data : 
+                            {
+                                type : 'CREATE',
+                                target : 'ROLES', 
+                                targetId : role.id,
+                                userId : userId
+                            }
+                        })
+                        res.send({message : `Role "${data.role}" berhasil di tambahkan ke ${username}`})
+                    })
+                .catch (err => 
+                    {
+                        console.log(err)
+                        res.send({err : err})
+                    })
+            }
+        })
+}
+
 export const resetPassword = async (req : Request, res: Response) => 
 {
     const data = req.body as Prisma.UserUpdateInput

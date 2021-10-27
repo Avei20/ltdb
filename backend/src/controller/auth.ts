@@ -1,9 +1,8 @@
 import * as jwt from 'jsonwebtoken'
 import Bcrypt from 'bcrypt'
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response } from 'express'
 import { Prisma, PrismaClient } from '@prisma/client'
 import { JWT_KEY, WAKTU_VALID_TOKEN } from '../constant'
-import { User } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -15,19 +14,17 @@ export const getId = (token : string) =>
 
 export const loginFirst = async (req: Request, res: Response) => 
 {
-    let data = req.body as unknown as Prisma.UserCreateInput
-    prisma.user.findFirst (
+    let data = req.body
+    prisma.user.findFirst ({
+        where : {
+            username : data.username,
+            deleted : false
+        },
+        include : 
         {
-            where : {
-                username : data.username,
-                deleted : false
-            },
-            include : 
-            {
-                roles : true,
-            },
-        }
-    )
+            roles : true,
+        },
+    })
     .then (user => {
         if (user === null)
         {
@@ -59,6 +56,7 @@ export const loginFirst = async (req: Request, res: Response) =>
                 })
         }
     })
+    .catch( err => console.log(err))
 }
 
 export const loginSecond =  async (req : Request, res : Response) =>
@@ -81,12 +79,28 @@ export const loginSecond =  async (req : Request, res : Response) =>
                     {
                         if(isValid)
                         {
-                            res.send(
-                            {
-                                token : jwt.sign({id: user?.id, role: data.role}, JWT_KEY, {
-                                    expiresIn : WAKTU_VALID_TOKEN
+                            Bcrypt.compare(data.password, 'L@n7413ur')
+                            .then (isDefault => 
+                                {
+                                    if (isDefault) {
+                                        res.send({
+                                            token : jwt.sign({id: user?.id, role: data.role}, JWT_KEY, {
+                                                expiresIn : WAKTU_VALID_TOKEN
+                                            }),
+                                            message : "Password masih default jangan lupa ganti Password demi keamanan akun!"
+                                        })
+                                        return
+                                    } 
+                                    else {
+                                        res.send({
+                                            token : jwt.sign({id: user?.id, role: data.role}, JWT_KEY, {
+                                                expiresIn : WAKTU_VALID_TOKEN
+                                            }),
+                                        })
+                                        return
+                                    }
+                                
                                 })
-                            })
                         }
                         else
                         {
@@ -97,6 +111,7 @@ export const loginSecond =  async (req : Request, res : Response) =>
 
         }
     })
+    .catch(err => console.log(err))
 }
       
 // export const login = (req: Request, res: Response): void =>

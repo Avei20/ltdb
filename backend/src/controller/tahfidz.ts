@@ -1,6 +1,7 @@
 import e, { Request, Response } from "express";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { getId } from "./auth";
+import { StructuredType } from "typescript";
 
 const prisma = new PrismaClient()
 
@@ -33,25 +34,43 @@ export const inputJamTahfidz = async (req: Request, res: Response) =>
                 {
                     res.send({ message : `${jamTahfidz.namaJam} berhasil dibuat`})
                 })
-                .catch(err => 
+                .catch(erro => 
                     {
-                        res.status(500).send({err : err})
+                        console.log(erro)
+                        res.status(500).send({erro : erro})
                     })
         }).catch(err => {
+            console.log(err)
             res.status(500).send({ error : err})
         })
 }
 
-// export const inputKelompokTahfidz = async (req : Request, res : Response)=>
-// {
-//     const data = req.body as unknown as Prisma.KelompokTahfidzCreateInput
+export const getJamTahfidz = async (req : Request, res : Response) => {
+    const jamTahfidz = await prisma.jamTahfidz.findMany({})
 
-//     prisma.kelompokTahfidz.create(
-//         {
-//             data : 
-//             {
-                
-//             }
-//         }
-//     )
-// }
+    if (jamTahfidz === null){
+        res.send ({ err : `Tabel Jam Tahfidz Masih kosong harap input untuk mengambil data `})
+        return
+    }
+    res.send (jamTahfidz)
+}
+
+export const getJamTahfidzByDate = async( req : Request, res: Response) => {
+    const input = req.body as Prisma.JamTahfidzCreateInput
+    const { tanggal } = req.params
+    const data = await prisma.jamTahfidz.findMany({
+        where : {
+            waktuMulai : {
+                gte: new Date (tanggal),
+            },
+            OR : {
+                waktuSelesai : {
+                    gte: new Date (tanggal)
+                }
+            },
+        }
+    })
+
+    res.send (data)
+}
+

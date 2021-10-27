@@ -1,4 +1,4 @@
-import { check } from "express-validator";
+import { check, param } from "express-validator";
 import { validator } from "./baseValidator";
 import { JenisKelamin } from "@prisma/client";
 
@@ -35,6 +35,40 @@ export const guruInputValidation = [
             .withMessage('Tanggal lahir tidak boleh kosong')
             .isDate()
             .withMessage('Format tanggal lahir tidak valid'),
+    ],
+    validator
+]
+
+export const guruUpdateValidation = [
+    [
+        param('nig')
+            .isInt()
+            .withMessage('NIG tidak valid'),
+        check('nama')
+            .optional()
+            .isString() // ganti ke re A-Za-z 
+            .withMessage('Nama tidak boleh berupa angka dan simbol'),
+        check('jenisKelamin')
+            .optional()
+            .isIn(Object.values(JenisKelamin))
+            .withMessage('Jenis Kelamin tidak dikenali mohon input ulang'),
+        check('tanggalLahir')
+            .optional()
+            .isDate()
+            .withMessage('Tanggal Lahir tidak valid mohon input ulang'),
+        check('tanggalMasuk')
+            .optional()
+            .isDate()
+            .withMessage('Tanggal Lahir tidak valid mohon input ulang'),        
+    ],
+    validator
+]
+
+export const guruByNigValidation = [
+    [
+        param('nig')
+            .isInt()
+            .withMessage('NIG tidak valid mohon input ulang!')
     ],
     validator
 ]

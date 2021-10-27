@@ -4,8 +4,6 @@ import { checkToken } from "../middleware/security/checkToken"
 import { alQuranInputValidation } from "../middleware/validator/quranValidator";
 import { getQuran, inputQuran } from "../controller/quran";
 import { getEvent } from "../controller/event";
-import { inputGuru } from "../controller/guru";
-import { guruInputValidation } from "../middleware/validator/guruValidator";
 import { parentInputValidation } from "../middleware/validator/parentValidator";
 import { inputParent } from "../controller/parent";
 import multer from "multer";
@@ -17,6 +15,7 @@ import userRoute from "./user";
 import muridRoute from "./murid";
 import testingRoute from "./testing";
 import guruRoute from "./guru";
+import tahfidzRoute from "./tahfidz";
 
 const router = Router()
 
@@ -34,6 +33,7 @@ router.use('/murid', muridRoute)
 router.use('/user', userRoute)
 router.use('/testing', testingRoute)
 router.use('/guru', guruRoute)
+router.use('/tahfidz', tahfidzRoute)
 
 
 router.post ('/test-post', async (req: Request, res: Response) => {

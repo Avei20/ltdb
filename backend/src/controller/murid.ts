@@ -27,7 +27,7 @@ export function pad(n :number, length : number = 3 ) {
     return (len > 0 ? new Array(++len).join('0') : '') + n
 }
 
-export const inputMurid = async (req: Request, res: Response) : Promise<void> => {
+export const inputMurid = async (req: Request, res: Response) => {
     //input data murid langsung generate history sama user 
     const data = req.body as unknown as Prisma.MuridCreateInput
     const tahunMasuk = req.body.tahunMasuk 
@@ -43,25 +43,25 @@ export const inputMurid = async (req: Request, res: Response) : Promise<void> =>
         detectNIS = await prisma.murid.findUnique({ where : { nis : nis }})
     }
 
+    console.log(username)
+
     let counter = 0
-    let newUsername 
+    let newUsername = username
     while (detectUsername !== null) {
         counter++
         newUsername = username + pad(counter)
+        console.log(newUsername)
         detectUsername = await prisma.user.findUnique({where : {username : newUsername}})
     }
     
     username = newUsername as string
 
-
-    prisma.murid.create(
-        {
-            include :
-            {
+    console.log(username, nis, counter)
+    prisma.murid.create({
+            include :{
                 muridDetails : {
                     include : {
-                        user : 
-                        {
+                        user : {
                             include : {
                                 roles : true
                             }
@@ -85,15 +85,17 @@ export const inputMurid = async (req: Request, res: Response) : Promise<void> =>
                 golonganDarah : data?.golonganDarah,
                 profileUrl : data?.profileUrl,
                 muridDetails : {
-                    create :{
-                        user : {
-                            create :{
-                                username : username,
-                                password :  defaultPassword,
+                    create : 
+                    {
+                        user :{
+                            create : {
+                                username : username, 
+                                password : defaultPassword, 
                                 roles : {
                                     create : [
-                                        { role : 'MURID'}
+                                        { role : 'MURID'},
                                     ]
+                                    
                                 }
                             }
                         }
@@ -129,6 +131,7 @@ export const inputMurid = async (req: Request, res: Response) : Promise<void> =>
         })
     })
 }
+
 
 export const editMurid = async (req : Request, res: Response) : Promise<void> => 
 {
@@ -418,7 +421,7 @@ export const recoveryMuridByNis = async (req : Request, res : Response ) =>
             const userid = getId(req.headers['auth'] as string)
             prisma.event.create({
                 data : {
-                    type : 'UPDATE', 
+                    type : 'RECOVERY', 
                     target : 'MURID',
                     targetId : murid.id,
                     userId : userid,

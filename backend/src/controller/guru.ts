@@ -17,7 +17,7 @@ function generateNIGS(tahunMasuk :number, tahunLahir : number) {
     return lahir + abad + masuk + String(belakang)
 }
 
-function generateKodeGuru (nama : string, tahunMasuk : number, tahunLahir : number) {
+function generateKodeGuru (nama : string, tahunMasuk : number, tahunLahir : number, counter: number = 0) {
     let masuk : string = String(tahunMasuk)
     let lahir : string = String(tahunLahir)
     masuk = masuk.slice(masuk.length-2, masuk.length)
@@ -25,18 +25,18 @@ function generateKodeGuru (nama : string, tahunMasuk : number, tahunLahir : numb
     let len = nama.split(" ").length
     let splitted = nama.split(" ")
     if (len > 1) {
-        return (splitted[0][0] + splitted[1][0]).toUpperCase() + "-" + lahir + masuk
+        return (splitted[0][0] + splitted[1][0+counter]).toUpperCase() + "-" + lahir + masuk
     }
-    else return (splitted[0][0] + splitted[0][1]).toUpperCase() +"-" + lahir + masuk
+    else return (splitted[0][0] + splitted[0][1+counter]).toUpperCase() +"-" + lahir + masuk
 }
 
 export const inputGuru = async (req : Request, res : Response ) => {
     const data = req.body as Prisma.GuruCreateInput
     const defaultPassword = await decrypt('L@n7412ur')
     const token = req.headers['auth'] as string
-    let tanggalMasuk = data.tanggalMasuk as Date
+    let tanggalMasuk = new Date(data.tanggalMasuk) 
     let tahunMasuk = tanggalMasuk.getFullYear() 
-    let tanggalLahir = data.tanggalLahir as Date 
+    let tanggalLahir = new Date (data.tanggalLahir)
     let tahunLahir = tanggalLahir.getFullYear()
     let username = generateUsername(data.nama)
     let nigs = generateNIGS(tahunMasuk, tahunLahir)
@@ -44,15 +44,18 @@ export const inputGuru = async (req : Request, res : Response ) => {
     
     let detectUsername = await prisma.user.findUnique({where : {username : username}})
     let detectNIGS = await prisma.guru.findUnique({where : {nigs : nigs}})
+    let detectKodeGuru = await prisma.guru.findUnique({ where : {kodeGuru : kodeGuru}})
 
+    //counter nigs sama
     while (detectNIGS !== null) {
         nigs = generateNIGS(tahunMasuk, tahunLahir)
         detectNIGS = await prisma.guru.findUnique({where : {nigs : nigs}})
     }
 
     let counter = 0
-    let newUsername 
-    
+    let newUsername = username
+
+    //counter username sama
     while (detectUsername !== null) {
         counter++ 
         newUsername = username + pad(counter)
@@ -60,6 +63,17 @@ export const inputGuru = async (req : Request, res : Response ) => {
     }
 
     username = newUsername as string
+
+    let counterKode = 0
+    let newKodeGuru = kodeGuru
+    while (detectKodeGuru !== null) {
+        counterKode++
+        newKodeGuru = generateKodeGuru(data.nama, tahunMasuk, tahunLahir, counterKode)
+        detectKodeGuru = await prisma.guru.findUnique({ where : {kodeGuru : newKodeGuru}})
+    }
+
+    kodeGuru = newKodeGuru as string
+    // console.log(kodeGuru)
 
     prisma.guru.create({
         include : {
@@ -81,16 +95,22 @@ export const inputGuru = async (req : Request, res : Response ) => {
             email : data.email, 
             jenisKelamin : data.jenisKelamin, 
             tempatLahir : data.tempatLahir, 
-            tanggalLahir : data.tanggalLahir,
-            tanggalMasuk : data.tanggalMasuk,
-            guruDetails : {
-                create : {
-                    user : {
-                        create : {
+            tanggalLahir : new Date (data.tanggalLahir),
+            tanggalMasuk : new Date (data.tanggalMasuk),
+            guruDetails : 
+            {
+                create : 
+                    {
+                    user : 
+                    {
+                        create : 
+                        {
                             username : username, 
                             password : defaultPassword, 
-                            roles : {
-                                create : {
+                            roles : 
+                            {
+                                create : 
+                                {
                                     role : 'GURU'
                                 }
                             }
@@ -223,7 +243,7 @@ export const getGuruByNig = async (req: Request, res: Response) => {
             res.send ({ message : `${nig} tidak ditemukan`})
             return
         }
-        else res.send ({guru})
+        else res.send ({guru, date : guru.tanggalLahir.toLocaleString()})
     })
     .catch (err => {
         console.log(err)
@@ -331,7 +351,7 @@ export const recoveryGurubyNig = (req : Request, res : Response) => {
             const userId = getId(req.headers['auth'] as string)
             prisma.event.create({
                 data : {
-                    type : 'UPDATE', 
+                    type : 'RECOVERY', 
                     target : 'MURID',
                     targetId : guru.id,
                     userId : userId,
