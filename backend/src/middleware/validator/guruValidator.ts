@@ -6,7 +6,9 @@ export const guruInputValidation = [
     [
         check('nig')
             .notEmpty()
-            .withMessage('NIG tidak boleh kosong'),
+            .withMessage('NIG tidak boleh kosong')
+            .isLength({ min : 14, max : 14})
+            .withMessage('Panjang NIG harus 14 angka !'),
         check('nama')
             .notEmpty()
             .withMessage('Nama tidak boleh kosong'),
@@ -43,7 +45,9 @@ export const guruUpdateValidation = [
     [
         param('nig')
             .isInt()
-            .withMessage('NIG tidak valid'),
+            .withMessage('NIG tidak valid')
+            .isLength({ min : 14, max : 14})
+            .withMessage('Panjang NIG harus 14 angka !'),
         check('nama')
             .optional()
             .isString() // ganti ke re A-Za-z 
@@ -69,6 +73,8 @@ export const guruByNigValidation = [
         param('nig')
             .isInt()
             .withMessage('NIG tidak valid mohon input ulang!')
+            .isLength({ min : 14, max : 14})
+            .withMessage('Panjang NIG harus 14 angka !'),
     ],
     validator
 ]

@@ -5,8 +5,8 @@ export const validator = ( req : Request, res: Response, next: NextFunction): vo
     const error = validationResult(req)
     if(!error.isEmpty())
     {
-        console.log(error.isEmpty())
-        console.log(req.body)
+        // console.log(error.isEmpty())
+        // console.log(req.body)
         res.json(
             {
                 error : error.array().map(validationError => validationError.msg)

@@ -9,7 +9,13 @@ export const muridInputValidation = [
             .withMessage('Nama tidak boleh kosong'),
         check('nism')
             .notEmpty()
-            .withMessage('NISM tidak boleh kosong'),
+            .withMessage('NISM tidak boleh kosong')
+            .isLength({ min : 19, max : 19})
+            .withMessage('Panjang NISM harus 19 angka !'),
+        check('nisn')
+            .optional()
+            .isLength({ min : 10, max : 10})
+            .withMessage('Panjang NISN harus 10 angka !'),
         check('jenisKelamin')
             .notEmpty()
             .withMessage('Jenis Kelamin tidak boleh kosong')
@@ -61,7 +67,17 @@ export const muridUpdateValidation = [
     [
         param('nis')
             .isInt()
-            .withMessage('NIS tidak Valid'),
+            .withMessage('NIS tidak Valid')
+            .isLength({ min : 10, max : 10})
+            .withMessage('Panjang NIS harus 10 angka !'),
+        check('nism')
+            .optional()
+            .isLength({ min : 19, max : 19})
+            .withMessage('Panjang NISM harus 19 angka !'),
+        check('nisn')
+            .optional()
+            .isLength({ min : 10, max : 10})
+            .withMessage('Panjang NISN harus 10 angka !'),
         check('nama')
             .optional()
             .isString() // ganti ke re A-Za-z 
@@ -103,6 +119,8 @@ export const muridByNisValidation = [
         param('nis')
             .isInt()
             .withMessage("NIS tidak valid mohon input ulang")
+            .isLength({ min : 10, max : 10})
+            .withMessage('Panjang NIS harus 10 angka !'),
     ]
     , validator
 ]

@@ -1,16 +1,37 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, TipeEvent } from "@prisma/client";
 import { Response, Request } from "express";
-import { TIMEZONE } from "../constant";
 
 const prisma = new PrismaClient()
 
-function convertTZ(date: Date, tzString : string) 
-{
-    return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString})); 
+class Event {
+    id:number
+    type : TipeEvent 
+    target : string
+    targetId: number
+    userId: number
+    time:string 
+
+    constructor(id:number, type : TipeEvent, target : string, targetId: number, userId: number, time: Date ) {
+        this.id = id, 
+        this.type = type, 
+        this.target = target, 
+        this.targetId = targetId,
+        this.userId = userId,
+        this.time = time.toLocaleString()
+    }
 }
 
 export const getEvent = async (req : Request, res : Response) => 
 {
     const event = await prisma.event.findMany()
-    res.send({event})
+    console.log(event.length)
+    let len = event.length
+
+    let data : Array<Event> = []
+
+    for (let i = 0; i < len ; i++) {
+        let e = new Event(event[i].id, event[i].type, event[i].target, event[i].targetId, event[i].userId, event[i].time)
+        data.push(e)
+    }
+    res.send({data})
 }

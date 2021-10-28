@@ -224,6 +224,8 @@ model Halaqoh {
   guruId              Int 
   guruTahfidzDetail   GuruTahfidzDetails     @relation(fields: [guruId], references: [guruId])
   muridTahfidzDetail  MuridTahfidzDetails[]
+  deleted             Boolean                 @default(false)
+  closed              Boolean                 @default(false)
 }
 
 model Session {
