@@ -6,7 +6,7 @@
                 <h3>Selamat Datang di Lan Tabur Management System</h3>
                 <h3>Silahkan Masuk</h3>
             </div>
-            <form >
+            
                 <div class="login-info col justify-content-center align-self-center m-5">
                     <div class="text-dark form-floating mb-3">
                         <input type="text" name="User Name" id="username" class="form-control" placeholder="Username">
@@ -17,24 +17,38 @@
                         <label for="pasword" class="form-label">Password</label>
                     </div>
                     <div class="row text-center px-3 mb-3">
-                        <button class="btn btn-outline-light px-5 mb-3" id="btnLogin">Masuk</button>
+                        <button class="btn btn-outline-light px-5 mb-3" id="btnLogin" @click="login">Masuk</button>
                         <a href="#" class="text-decoration-none text-white">Lupa Password?</a>
                     </div>
                 </div>
-            </form>
+            
         </div>
     </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
     name: 'Login',
+    computed : {
+
+    },
+    setup () {
+       const login = (username, password) => {
+           axios.post(`localhost:2008/login/get-role`, {usename : username, password : password}) 
+           .then (response => console.log(response))
+           .catch (err => console.log (err))
+       }
+       return {
+           login
+       }
+    }
 }
 
 
 </script>
 
-<style scoped>
+<style>
 .login-banner 
 {
     height: 50px;
