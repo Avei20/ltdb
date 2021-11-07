@@ -6,45 +6,52 @@
                 <h3>Selamat Datang di Lan Tabur Management System</h3>
                 <h3>Silahkan Masuk</h3>
             </div>
-            
+                <form @submit.prevent="userLogin">
                 <div class="login-info col justify-content-center align-self-center m-5">
                     <div class="text-dark form-floating mb-3">
-                        <input type="text" name="User Name" id="username" class="form-control" placeholder="Username">
+                        <input type="text" v-model="form.username" name="User Name" id="username" class="form-control" placeholder="Username">
                         <label for="username">Username</label>
                     </div>
                     <div class="form-floating text-dark mb-3">
-                        <input type="password" name="Password" id="password" class="row mx-auto form-control" placeholder="Password">
+                        <input type="password" v-model="form.password" name="Password" id="password" class="row mx-auto form-control" placeholder="Password">
                         <label for="pasword" class="form-label">Password</label>
                     </div>
                     <div class="row text-center px-3 mb-3">
-                        <button class="btn btn-outline-light px-5 mb-3" id="btnLogin" @click="login">Masuk</button>
+                        <button class="btn btn-outline-light px-5 mb-3" id="btnLogin">Masuk</button>
                         <a href="#" class="text-decoration-none text-white">Lupa Password?</a>
                     </div>
                 </div>
+                </form>
             
         </div>
     </div>
 </template>
 
 <script>
-import axios from "axios";
 export default {
     name: 'Login',
-    computed : {
-
+    data () {
+        return {
+            form : {
+                username : '', 
+                password : ''
+            },
+            errors : null
+        }
     },
-    setup () {
-       const login = (username, password) => {
-           axios.post(`localhost:2008/login/get-role`, {usename : username, password : password}) 
-           .then (response => console.log(response))
-           .catch (err => console.log (err))
-       }
-       return {
-           login
-       }
+    methods : {
+        userLogin () {
+            this.$store.dispatch('getRole', this.form )
+            .then(response => {
+                console.log(response)
+                this.$router.push({ name : 'Homepage'})
+            })
+            .catch( err => {
+                this.errors = err
+            })
+        }
     }
 }
-
 
 </script>
 
@@ -70,8 +77,12 @@ body
     background-color: #F6C40C;
 }
 
-.container-login
-{
+.container-login {
     background-color: #D7F88B;
 }
+
+.bg-lt-hijaumuda { 
+    background-color: #D7F88B;
+}
+
 </style>

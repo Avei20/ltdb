@@ -39,9 +39,9 @@ export const loginFirst = async (req: Request, res: Response) =>
                 .then (isValid => {
                     if (isValid)
                     {
-                        res.send ({
-                            role : user.roles
-                        })
+                        res.send (
+                            user.roles
+                        )
                     } 
                 })
                 .catch (err => 

@@ -11,6 +11,11 @@ const routes = [
     path : '/',
     name : 'HomePage',
     component : () => import('../views/Homepage.vue')
+  },
+  {
+    path : '/testing',
+    name : 'Testing',
+    component : () => import ('@/views/Testing.vue')
   }
 ]
 
@@ -18,5 +23,9 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+// router.beforeEach((to, from, next) => {
+  
+// })
 
 export default router
