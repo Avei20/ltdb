@@ -1,16 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '../store'
 import Login from '../views/Login.vue'
 
 const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta : {title : "Login "}
   },
   {
     path : '/',
     name : 'HomePage',
-    component : () => import('../views/Homepage.vue')
+    component : () => import('@/views/Homepage.vue'),
+    meta : {title : "Lan Tabur Database System"}
   },
   {
     path : '/testing',
@@ -24,8 +27,9 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-  
-// })
+router.beforeEach((to, from, next) => {
+  if (to.name == 'HomePage' && !store.getters.isLogin) next({name : "Login"})
+  next()
+})
 
 export default router

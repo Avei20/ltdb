@@ -11,6 +11,9 @@ export default {
     components :{
         Navbar
     },
+    mounted () {
+        document.title = "Lan Tabur Database"
+    },
     setup() {
         
     },

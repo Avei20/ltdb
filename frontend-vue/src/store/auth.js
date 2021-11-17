@@ -3,7 +3,7 @@ import { removeHeaderToken } from "../../utils/auth"
 
 export default {
     state : {
-        roles : [],
+        role : [],
         isLoggedIn : false,
     },
     mutations : {
@@ -12,20 +12,19 @@ export default {
         },
         reset_login(state) {
             state.isLoggedIn = false
-            state.roles = []
-        },
+            state.role = []
+        }, 
         set_role (state, data) {
-            state.roles = data.data
-            console.log(state.roles)
+            state.role = data.data
         }
     },
     getters : {
         isLoggedIn (state) {
             return state.isLoggedIn
         },
-        roles ( state ) {
-            console.log(state.roles)
-            return state.roles
+        role ( state ) {
+            console.log(state.role)
+            return state.role
         }
     },
     actions : {
@@ -46,10 +45,16 @@ export default {
         },
         async getRole ({commit}, data) {
             try {
-                let roles = await axios.post('login/get-role', data)
-                localStorage.setItem('roles', JSON.stringify(roles.data) )
-                commit ('set_role', roles)
-                console.log('roles : ' + roles)
+                let result = await axios.post('login/get-role', data)
+                // localStorage.setItem('role', JSON.stringify(role.data) )
+                // commit ('set_role', role)
+                if (result.data.role == null) {
+                    console.log('role kosong')
+                    console.log(JSON.stringify(result.data.token))
+                }
+                else {
+                    console.log(JSON.stringify(result.data.role))
+                }
             } catch (error) {
                 commit ('reset_login')
                 removeHeaderToken()

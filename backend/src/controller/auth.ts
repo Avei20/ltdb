@@ -3,6 +3,7 @@ import Bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 import { Prisma, PrismaClient } from '@prisma/client'
 import { JWT_KEY, WAKTU_VALID_TOKEN } from '../constant'
+import { idText } from 'typescript'
 
 const prisma = new PrismaClient()
 
@@ -36,12 +37,41 @@ export const loginFirst = async (req: Request, res: Response) =>
         else 
         {
             Bcrypt.compare(data.password, user.password)
-                .then (isValid => {
+                .then (async isValid => {
                     if (isValid)
                     {
-                        res.send (
-                            user.roles
-                        )
+                        if (user.roles.length > 1) {
+                            const roles = await prisma.roles.findMany ({
+                                where : {
+                                    userId : user.id
+                                }, 
+                                select : {
+                                    role : true
+                                }
+                            })
+                            res.send ({
+                                multirole : true,
+                                roles
+                            })
+                        }
+                        else {
+                            Bcrypt.compare(user.password, 'L@n7413ur')
+                            .then (isDefault => {
+                                const token = jwt.sign({id : user?.id, role : user?.roles[0].role}, JWT_KEY, {
+                                    expiresIn : WAKTU_VALID_TOKEN
+                                })
+                                if (isDefault) {
+                                    res.send({
+                                        multirole : false,
+                                        token : token, 
+                                        message : "Password masih default jangan lupa ganti Password demi keamanan akun!"
+                                    })
+                                }
+                                else {
+                                    res.send({ multirole : false, token : token })
+                                }
+                            })
+                        } 
                     } 
                 })
                 .catch (err => 

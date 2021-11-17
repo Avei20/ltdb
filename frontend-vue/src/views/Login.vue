@@ -8,14 +8,16 @@
             </div>
                 <form @submit.prevent="userLogin">
                 <div class="login-info col justify-content-center align-self-center m-5">
-                    <div class="text-dark form-floating mb-3">
+                    <div class="input-group text-dark mb-3">
                         <input type="text" v-model="form.username" name="User Name" id="username" class="form-control" placeholder="Username">
-                        <label for="username">Username</label>
+                        <label class="input-group-text">@lantabur.sch.id</label>
                     </div>
-                    <div class="form-floating text-dark mb-3">
+                    <div class="input-group text-dark mb-3">
                         <input type="password" v-model="form.password" name="Password" id="password" class="row mx-auto form-control" placeholder="Password">
-                        <label for="pasword" class="form-label">Password</label>
                     </div>
+                    <select class="form-select form-select-sm text-dark mb-3 p-2 d-none" aria-label="Default select example" id="role" >
+                        <option  v-for="roles in this.$store.getters.roles" :key="roles"> {{roles.role}}</option>
+                    </select>
                     <div class="row text-center px-3 mb-3">
                         <button class="btn btn-outline-light px-5 mb-3" id="btnLogin">Masuk</button>
                         <a href="#" class="text-decoration-none text-white">Lupa Password?</a>
@@ -34,21 +36,34 @@ export default {
         return {
             form : {
                 username : '', 
-                password : ''
+                password : '', 
+                role : ''
             },
-            errors : null
+            errors : null,
+            multirole : false
         }
+    },
+    mounted () {
+        document.title = "Login"
     },
     methods : {
         userLogin () {
-            this.$store.dispatch('getRole', this.form )
-            .then(response => {
-                console.log(response)
-                this.$router.push({ name : 'Homepage'})
-            })
-            .catch( err => {
-                this.errors = err
-            })
+            if (this.multirole == false) {
+                this.$store.dispatch('firstLogin', this.form )
+                .then(
+                    response => {
+                    if (response == 'Success') {
+                        this.$router.push({ name : 'HomePage'})
+                    }
+                    else {
+                        //combo box role visible 
+                        return
+                    }
+                })
+                .catch( err => {
+                    this.errors = err
+                })
+            }
         }
     }
 }

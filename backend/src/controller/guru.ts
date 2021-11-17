@@ -38,7 +38,7 @@ export const inputGuru = async (req : Request, res : Response ) => {
     let tahunMasuk = tanggalMasuk.getFullYear() 
     let tanggalLahir = new Date (data.tanggalLahir)
     let tahunLahir = tanggalLahir.getFullYear()
-    let username = generateUsername(data.nama)
+    let username = generateUsername(data.nama).toLowerCase()
     let nigs = generateNIGS(tahunMasuk, tahunLahir)
     let kodeGuru = generateKodeGuru(data.nama, tahunMasuk, tahunLahir)
     
