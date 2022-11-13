@@ -10,7 +10,7 @@ const routes = [
     meta : {title : "Login "}
   },
   {
-    path : '/',
+    path : '/dashboard',
     name : 'HomePage',
     component : () => import('@/views/Homepage.vue'),
     meta : {title : "Lan Tabur Database System"}
@@ -28,7 +28,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name == 'HomePage' && !store.getters.isLogin) next({name : "Login"})
+  if (to.name == 'HomePage' && !store.getters.isLogin) next({name : "HomePage"})
   next()
 })
 

@@ -3,8 +3,9 @@ WORKDIR /app/frontend
 
 COPY package*.json ./
 RUN yarn 
+
 COPY ./ .
-RUN yarn run build 
+RUN yarn build 
 
 FROM nginx:mainline-alpine as frontend-stage
 RUN mkdir /app

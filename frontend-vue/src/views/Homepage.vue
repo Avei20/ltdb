@@ -1,7 +1,18 @@
 <template>
-    <div>
+    <div class="container">
         <Navbar/>
-        <h3>isi</h3>
+        <div class="container">
+            <h3 class="font-white text-center ">Isi dari buku ini adalah sebagai berikut</h3>
+            <h2 class="font-white text-center ">Isi dari buku ini adalah sebagai berikut</h2>
+            <h2 class="font-white text-center ">Isi dari buku ini adalah sebagai berikut</h2>
+            <h2 class="font-white text-center ">Isi dari buku ini adalah sebagai berikut</h2>
+            <h2 class="font-white text-center ">Isi dari buku ini adalah sebagai berikut</h2>
+            <h2 class="font-white text-center ">Isi dari buku ini adalah sebagai berikut</h2>
+            <h2 class="font-white text-center ">Isi dari buku ini adalah sebagai berikut</h2>
+            <h2 class="font-white text-center ">Isi dari buku ini adalah sebagai berikut</h2>
+            <h2 class="font-white text-center ">Isi dari buku ini adalah sebagai berikut</h2>
+            <h2 class="font-white text-center ">Isi dari buku ini adalah sebagai berikut</h2>
+        </div>
     </div>
 </template>
 
