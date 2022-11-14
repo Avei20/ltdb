@@ -9,7 +9,7 @@ const prisma = new PrismaClient()
 
 export const getId = (token : string) => 
 {
-    const decoded = jwt.decode(token, {complete : true})
+    const decoded = jwt.decode(token, {complete : true}) as jwt.JwtPayload
     return decoded?.payload.id
 }
 
