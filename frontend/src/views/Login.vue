@@ -26,10 +26,10 @@
 
 <script setup lang="ts">
 // import { Options, Vue } from 'vue-class-component';
-import axios from '@/plugins/axios'
+import axios from 'axios'
 async function login () {
     console.log(form)
-    const response = await axios.get('/')
+    const response = await axios.get('localhost:2008/')
     console.log(response)
 }
 

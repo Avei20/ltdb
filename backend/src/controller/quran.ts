@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Prisma, PrismaClient } from '@prisma/client'
-import { decode } from "jsonwebtoken";
+import { decode, JwtPayload } from "jsonwebtoken";
 import { TIMEZONE } from "../constant";
 
 const prisma = new PrismaClient()
@@ -19,7 +19,7 @@ export const inputQuran = async (req : Request, res : Response): Promise<void> =
         }
     }).then(input => {
         const token = req.headers['auth'] as string
-        const decoded = decode(token, {complete :true})
+        const decoded = decode(token, {complete :true}) as JwtPayload
         const userId = decoded?.payload.id
         const time = new Date().toLocaleString("en-US",{timeZone : TIMEZONE})
         console.log(time)
