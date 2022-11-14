@@ -123,7 +123,7 @@ model GuruDetails {
   guru                Guru                @relation(fields: [guruId], references:[id])
   guruId              Int
   user                User                @relation(fields: [userId], references:[id])
-  userId              Int
+  userId              Int                 @unique
   guruTahfidzDetail   GuruTahfidzDetails?
   @@id([guruId])
 }
@@ -162,7 +162,7 @@ model Murid {
 model MuridDetails {  
   muridId                 Int 
   murid                   Murid             @relation(fields: [muridId], references: [id])
-  userId                  Int 
+  userId                  Int               @unique
   user                    User              @relation(fields: [userId], references:[id])
   tahfidzDetails          MuridTahfidzDetails?
   @@id([muridId])
@@ -201,7 +201,7 @@ model Parent {
 model ParentDetails {
   parentId        Int 
   parent          Parent    @relation(fields: [parentId], references: [id])
-  userId          Int 
+  userId          Int       @unique
   user            User      @relation(fields: [userId], references:[id])
   @@id([parentId])
 }

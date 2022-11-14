@@ -8,7 +8,7 @@
                 <span class="text-xl text-white ">Selamat Datang di</span>
                 <span class="text-2xl text-white"> Lan Tabur Management System</span>
 
-                <form action="" class="flex flex-wrap justify-center items-baseline">
+                <form @submit.prevent="login" class="flex flex-wrap justify-center items-baseline">
                     <label class="w-full py-2 text-white text-left" for="" v-modal="form.username">Username</label>
                     <input class="w-full p-2 rounded shadow " type="text">
                     <label class="w-full py-2 text-white text-left" for="" v-modal="form.password">Password</label>
@@ -26,10 +26,18 @@
 
 <script setup lang="ts">
 // import { Options, Vue } from 'vue-class-component';
+import axios from '@/plugins/axios'
+async function login () {
+    console.log(form)
+    const response = await axios.get('/')
+    console.log(response)
+}
 
 const form = {
     username:String, 
     password:String,
     role:String
 }
+
+// export default { login }
 </script>
