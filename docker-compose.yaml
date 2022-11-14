@@ -17,7 +17,7 @@ services:
     image : ltdb-frontend 
     container_name : ltdb-frontend
     build : 
-      context : ./frontend-vue
+      context : ./frontend
     depends_on: 
       - rest
     ports : 
