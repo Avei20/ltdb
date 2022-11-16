@@ -1,15 +1,15 @@
 <template>
-  Home
+  <h1>{{ data }}</h1>
+  <button @click="fetchAPI" class="border rounded">Fetch</button>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
-
-@Options({
-  components: {
-    HelloWorld,
-  },
-})
-export default class HomeView extends Vue {}
+<script setup lang="ts">
+import axios from 'axios'
+import {ref} from 'vue'
+let data = ref('') 
+async function fetchAPI() {
+  const res = await axios.get('https://ltdb.lantabur.sch.id/')
+  data.value = res.data.message 
+  console.log(res)
+}
 </script>
