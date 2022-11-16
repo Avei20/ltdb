@@ -2,10 +2,18 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-  },
-  getters: {
+    isLoggedIn:false,
+    token: '',
   },
   mutations: {
+    setLoggedIn(state, payload) {
+        state.isLoggedIn = payload
+    },
+    setToken(state, payload) {
+        state.token = payload
+    }
+  },
+  getters: {
   },
   actions: {
   },

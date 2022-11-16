@@ -7,12 +7,14 @@
             <div class="flex justify-center flex-wrap px-3 text-center bg-ltDarkGreen py-8 mb-10 basis-1/2 m-3 rounded-3xl sm:basis-1/2">
                 <span class="text-xl text-white ">Selamat Datang di</span>
                 <span class="text-2xl text-white"> Lan Tabur Management System</span>
-
+                <ul>
+                    <li class="text-red-500" v-for="msg in error" :key="msg">{{msg}}</li>
+                </ul>
                 <form @submit.prevent="login" class="flex flex-wrap justify-center items-baseline">
-                    <label class="w-full py-2 text-white text-left" for="" v-modal="form.username">Username</label>
-                    <input class="w-full p-2 rounded shadow " type="text">
-                    <label class="w-full py-2 text-white text-left" for="" v-modal="form.password">Password</label>
-                    <input class="w-full p-2 rounded shadow " type="password">
+                    <label class="w-full py-2 text-white text-left" for="" >Username</label>
+                    <input class="w-full p-2 rounded shadow " type="text" v-model="form.data.username">
+                    <label class="w-full py-2 text-white text-left" for="" >Password</label>
+                    <input class="w-full p-2 rounded shadow " type="password" v-model="form.data.password">
                     <button class="rounded border w-full my-2 p-2 bg-ltLightGreen" type="submit" >Login</button>
                     <span class="text-white">
                         Lupa Password?
@@ -26,18 +28,47 @@
 
 <script setup lang="ts">
 // import { Options, Vue } from 'vue-class-component';
-import axios from 'axios'
+import axios from '@/plugins/axios'
+import { reactive, ref } from 'vue';
+import { useStore } from 'vuex'
+
+document.title = 'Login - Lan Tabur Management System'
+
+const store = useStore()
+const error = ref([])
+
 async function login () {
-    console.log(form)
-    const response = await axios.get('localhost:2008/')
-    console.log(response)
+    // console.log(form)
+    await axios.post('/login', form.data)
+    .then(res => {
+        console.log('Tokeh dapat')
+        console.log(res)
+    })
+    .catch(err => {
+        console.log('error occurs')
+        console.log(err.response.data)
+        error.value = err.response.data
+    })
+    // console.log(response.status)
+    // console.log(response.data.error)
+    // if (response.status == 200) {
+    //     store.commit('setToken', response.data.token)
+    //     store.commit('setLoggedIn', true)
+    // }
+    // else {
+    //     console.log("Error happens")
+    //     console.log(response.data.response)
+    // }
+    // console.log(store.state)
 }
 
-const form = {
-    username:String, 
-    password:String,
-    role:String
-}
+const form = reactive({
+    data : {
+        username:'', 
+        password:'',
+        role:'ADMIN'
+    }
+})
 
 // export default { login }
 </script>

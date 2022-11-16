@@ -7,6 +7,7 @@ export const validator = ( req : Request, res: Response, next: NextFunction): vo
     {
         // console.log(error.isEmpty())
         // console.log(req.body)
+        res.status(406)
         res.json(
             {
                 error : error.array().map(validationError => validationError.msg)
