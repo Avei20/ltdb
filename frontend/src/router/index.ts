@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Login from '@/views/Login.vue'
-import { useStore } from 'vuex'
+import { State, key, useStore } from '@/store/index'
+import { Store } from 'vuex'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -23,16 +24,25 @@ const router = createRouter({
 })
 
 
-const store = useStore()
+const store =  useStore()
 
 router.beforeEach(async (to, from, next) => {
+  // .then(stroe => {
+    
+  // })
+  console.log(typeof(store))
+  console.log(store)
+  next()  // const oeuoieu = useStore()
+  console.log(store.state)
   if (to.meta.middleware) {
     console.log(to.meta.middleware)
     const middleware = await import(`../middleware/${to.meta.middleware}`)
     if (middleware) {
-      console.log('detected');
-      
-      middleware.default(next, store)
+      if (!store.state.isLoggedIn) {
+        next('/login')
+        // store.commit('')
+      }
+      else next()
     }
   }
   else next()

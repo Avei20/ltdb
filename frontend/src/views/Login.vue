@@ -29,13 +29,14 @@
 <script setup lang="ts">
 // import { Options, Vue } from 'vue-class-component';
 import axios from '@/plugins/axios'
+import { isArray } from '@vue/shared';
 import { reactive, ref } from 'vue';
 import { useStore } from 'vuex'
 
 document.title = 'Login - Lan Tabur Management System'
 
 const store = useStore()
-const error = ref([])
+const error = ref(Array(''))
 
 async function login () {
     // console.log(form)
@@ -43,17 +44,26 @@ async function login () {
     .then(res => {
         console.log('Tokeh dapat')
         console.log(res)
+        store.commit('setToken', res.data.token)
+        store.commit('setLoggedIn', true)
     })
     .catch(err => {
         console.log('error occurs')
-        console.log(err.response.data)
-        error.value = err.response.data
+        console.log(err)
+        console.log(err.response.data.error)
+        console.log(isArray(err.response.data.error))
+        if (isArray(err.response.data.error)) {
+            error.value = err.response.data.error
+        }
+        else {
+            error.value = Array(err.response.data.error)
+        }
+        store.commit('setToken', '')
+        store.commit('setLoggedIn', false)
     })
     // console.log(response.status)
     // console.log(response.data.error)
     // if (response.status == 200) {
-    //     store.commit('setToken', response.data.token)
-    //     store.commit('setLoggedIn', true)
     // }
     // else {
     //     console.log("Error happens")

@@ -1,6 +1,14 @@
-import { createStore } from 'vuex'
+import { InjectionKey } from 'vue'
+import { createStore, Store, useStore as baseUseStore } from 'vuex'
 
-export default createStore({
+export interface State {
+  isLoggedIn:boolean,
+  token:string
+}
+
+export const key: InjectionKey<Store<State>> = Symbol()
+
+export const store = createStore<State>({
   state: {
     isLoggedIn:false,
     token: '',
@@ -20,3 +28,7 @@ export default createStore({
   modules: {
   }
 })
+
+export function useStore() {
+  return baseUseStore(key)
+}
