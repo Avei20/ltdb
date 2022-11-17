@@ -50,7 +50,7 @@ export default {
                 console.log(res)
                 store.commit('setToken', res.data.token)
                 store.commit('setLoggedIn', true)
-                router.push('/')
+                router.push('/').then(() => store.commit('setIsLoginPage', false))
             })
             .catch(err => {
                 console.log('error occurs')
