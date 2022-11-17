@@ -4,11 +4,11 @@ import * as jwt from "jsonwebtoken"
 
 export const checkToken = (req: Request, res: Response, next : NextFunction) => 
 {
-    const token = <string>req.headers['auth']
+    const token = <string>req.headers['Authorization']
     
     if (token == undefined)
     {
-        res.status(400)
+        res.status(401)
         res.send({
             error: 'Akses Di Tolak'
         })

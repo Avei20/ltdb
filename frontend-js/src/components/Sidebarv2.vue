@@ -37,35 +37,15 @@
                         Main
                     </h3> -->
                     <ul class="mb-8 text-sm font-medium">
-                        <li>
-                            <router-link to="/" class="active flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600">
-                                <span class="select-none">Dashboard</span>
+                        <li v-for="route in routeList" :key="route.namaRoute">
+                            <router-link :to="route.to" class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600" :class="routerName == 'Dashboard' ? 'active' : ''">
+                                <span class="select-none">{{route.namaRoute}}</span>
                             </router-link>
-                        </li>
-                        <li>
-                            <router-link to="/murid" class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600">
-                                <span class="select-none">Murid</span>
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link to="/guru" class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600">
-                                <span class="select-none">Guru</span>
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link to="/parent" class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600">
-                                <span class="select-none">Orang Tua</span>
-                            </router-link>
-                        </li>
-                        <li>
-                            <button to="/User" class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600">
-                                <span class="select-none">Users</span>
-                            </button>
                         </li>
                         <li>
                             <button to="/parent" class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600">
                                 <span class="select-none">Log Out</span>
-                            </button>
+                            </button> 
                         </li>
                     </ul>
                 </div>
@@ -130,14 +110,25 @@
 Change class "fixed" to "sticky" in "navbar" (l. 33) so the navbar doesn't hide any of your page content!
 -->
 <script>
-import { onMounted } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
 export default{
     setup(){
         const store = useStore()
+        const route = useRoute()
+
+        const pathName = ref(route.name)
+        const routeList = reactive([
+            { namaRoute: 'Dashboard', to : '/' },
+            { namaRoute: 'Murid', to: '/murid' },
+            { namaRoute: 'Guru', to: '/guru' },
+            { namaRoute: 'Users', to: '/user' },
+        ])
 
         onMounted(()=> {
+            console.log(routeList)
             document.addEventListener("DOMContentLoaded", () => {
                 const navbar = document.getElementById("navbar");
                 const sidebar = document.getElementById("sidebar");
@@ -156,7 +147,9 @@ export default{
             });
         })      
         return {
-            store
+            store,
+            pathName,
+            routeList
         }   
     }
 

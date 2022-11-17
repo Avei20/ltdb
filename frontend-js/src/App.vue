@@ -62,17 +62,18 @@ export default {
       // document.title = `${this.$router.name}`
       console.log('wah monted nih');
       const route = useRoute()
+      console.log('Router Name ' + route.name)
       // const name = await route.name
       // console.log(name)
       console.log(route.name === 'Login')
-      // if (route.name === 'Login') {
-      //   console.log('iya ini login');
-      //   store.commit('setIsLoginPage', true)
-      // }
-      // else {
-      //   console.log('mounted - bukan login');
-      //   store.commit('setIsLoginPage', false)
-      // }
+      if (route.name === 'Login') {
+        console.log('iya ini login');
+        store.commit('setIsLoginPage', true)
+      }
+      else {
+        console.log('mounted - bukan login');
+        store.commit('setIsLoginPage', false)
+      }
       console.log(store.state.isLoggedIn)
       console.log(sessionStorage.getItem('isLoggedIn') == 'false')
     })
