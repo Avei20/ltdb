@@ -4,7 +4,9 @@ import * as jwt from "jsonwebtoken"
 
 export const checkToken = (req: Request, res: Response, next : NextFunction) => 
 {
-    const token = <string>req.headers['Authorization']
+    const token = <string>req.headers['authorization']
+    // console.log(req.headers)
+    // console.log(token)
     
     if (token == undefined)
     {
