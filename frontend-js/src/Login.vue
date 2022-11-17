@@ -55,7 +55,7 @@ export default {
             .catch(err => {
                 console.log('error occurs')
                 console.log(err)
-                console.log(err.response.data.error)
+                // console.log(err.response.data.error)
                 console.log(isArray(err.response.data.error))
                 if (isArray(err.response.data.error)) {
                     error.value = err.response.data.error
