@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: appleboy/ssh-action@master
-    - name: Build the Docker image
-      with:
-          host: ${{ secrets.LTMS_IP_DYNAMIC_URL }}
-          username: ${{ secrets.LTMS_USERNAME }}
-          key: ${{ secrets.LTMS_KEY }}
-          port: 22
-          script : |
-            cd ${{ secrets.LTMS_PROJECT_PATH }}
-            git pull origin main 
-            docker compose up --build -d
+        - name: Build the Docker image
+          uses: appleboy/ssh-action@master
+          with:
+              host: ${{ secrets.LTMS_IP_DYNAMIC_URL }}
+              username: ${{ secrets.LTMS_USERNAME }}
+              key: ${{ secrets.LTMS_KEY }}
+              port: 22
+              script : |
+                cd ${{ secrets.LTMS_PROJECT_PATH }}
+                git pull origin main 
+                docker compose up --build -d
