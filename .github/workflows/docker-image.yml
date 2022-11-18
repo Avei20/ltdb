@@ -4,21 +4,21 @@ on:
   pull_request:
     branches: [ "main" ]
 
-jobs:
+deploy:
+  runs-on: ubuntu-latest
 
-  build:
+  if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }} # Only run this workflow if it is main branch on push event
+  steps:
+    - uses: actions/checkout@v2
 
-    runs-on: ubuntu-latest
-
-    steps:
-        - name: Build the Docker imageoeu
-          uses: appleboy/ssh-action@master
-          with:
-              host: ${{ secrets.LTMS_IP_DYNAMIC_URL }}
-              username: ${{ secrets.LTMS_USERNAME }}
-              key: ${{ secrets.LTMS_KEY }}
-              port: 22
-              script : |
-                cd ${{ secrets.LTMS_PROJECT_PATH }}
-                git pull origin main 
-                docker compose up --build -d
+    - name: Build the Docker imageoeu
+      uses: appleboy/ssh-action@master
+      with:
+          host: ${{ secrets.LTMS_IP_DYNAMIC_URL }}
+          username: ${{ secrets.LTMS_USERNAME }}
+          key: ${{ secrets.LTMS_KEY }}
+          port: 22
+          script : |
+            cd ${{ secrets.LTMS_PROJECT_PATH }}
+            git pull origin main 
+            docker compose up --build -d
