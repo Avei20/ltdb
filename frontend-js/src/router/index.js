@@ -1,15 +1,24 @@
-import LoginVue from '@/Login.vue'
+import LoginVue from '@/views/Login.vue'
 import store from '@/store'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, } from 'vue-router'
 import DashboardVue from '../views/Dashboard.vue'
 import GuruVue from '@/views/Guru.vue'
 import MuridVue from '@/views/Murid.vue'
 import UserVue from '@/views/User.vue'
 import ParentVue from '@/views/Parent.vue'
+import LandingPageVue from '@/views/LandingPage.vue'
 
 const routes = [
   {
     path: '/',
+    name: 'Landing Page',
+    component: LandingPageVue,
+    meta : {
+      title : 'Lan Tabur Management System'
+    }
+  },
+  {
+    path: '/dashboard',
     name: 'Dashboard',
     component: DashboardVue,
     meta : {
@@ -62,8 +71,11 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  
 })
+
+
 
 router.beforeEach((to, _ , next) => {
   if (to.meta.middleware){

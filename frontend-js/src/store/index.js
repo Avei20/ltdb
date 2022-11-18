@@ -1,3 +1,4 @@
+import axios from '@/plugins/axios'
 import { createStore } from 'vuex'
 
 export default createStore({
@@ -11,10 +12,12 @@ export default createStore({
   mutations: {
     setLoggedIn(state, payload) {
       sessionStorage.setItem('isLoggedIn', payload)
+      
       state.isLoggedIn = payload
     },
     setToken(state, payload) {
       sessionStorage.setItem('token', payload)
+      axios.defaults.headers.common['Authorization'] = payload
       state.token = payload
     },
     setIsLoginPage(state, payload) {

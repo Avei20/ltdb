@@ -4,7 +4,7 @@
     <router-link to="/about">About</router-link>
   </nav> -->
   <!-- <NavbarVue class="" :class="checkLoginStatus"></NavbarVue> -->
-  <Sidebarv2Vue></Sidebarv2Vue>
+  <!-- <Sidebarv2Vue></Sidebarv2Vue> -->
   <router-view/>
 </template>
 
@@ -12,11 +12,11 @@
 import { onBeforeUnmount, onBeforeUpdate, onMounted, onUnmounted, onUpdated, ref } from 'vue';
 import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from 'vue-router';
 import { useStore } from 'vuex';
-import Sidebarv2Vue from './components/Sidebarv2.vue';
+// import Sidebarv2Vue from './components/Sidebarv2.vue';
 
 export default {
   components : {
-    Sidebarv2Vue
+    // Sidebarv2Vue
   },
   setup(){
     const store = useStore()
